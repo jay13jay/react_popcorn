@@ -1,9 +1,23 @@
 import PropTypes from 'prop-types';
-function Star( { onRate, onHover, onHoverLeave, full } ) {
+function Star({ onRate,
+    onHover, 
+    onHoverLeave, 
+    full, 
+    color = '#fcc419',
+    size = 48
+}) {
+    const starStyle = {
+        height: '48px',
+        width: '48px',
+        display: 'block',
+        cursor: 'pointer',
+        color,
+        size: `${size}px`,
+    }
     return (
         <>
             <span
-                className="star"
+                style={starStyle}
                 role="button"
                 onClick={onRate}
                 onMouseEnter={onHover}
@@ -12,7 +26,7 @@ function Star( { onRate, onHover, onHoverLeave, full } ) {
                     <svg 
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
-                        fill="#000"
+                        fill={color}
                         stroke="#000" >
                         <path
                             d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
@@ -24,6 +38,7 @@ function Star( { onRate, onHover, onHoverLeave, full } ) {
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
+                        color={color}
                         stroke="#000"
                         >
                         <path
@@ -43,6 +58,8 @@ Star.propTypes = {
     onRate: PropTypes.func.isRequired,
     onHover: PropTypes.func.isRequired,
     onHoverLeave: PropTypes.func.isRequired,
-    full: PropTypes.bool.isRequired
+    full: PropTypes.bool.isRequired,
+    color: PropTypes.string,
+    size: PropTypes.number,
 }
 export default Star;

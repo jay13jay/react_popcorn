@@ -1,9 +1,13 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import './StarRating.css';
 import Star from './Star';
 
-function StarRating({ maxRating = 5 }) {
+function StarRating({ 
+    maxRating = 5,
+    color = '#fcc419',
+    size = 48 
+}) {
+
     const [rating, setRating] = useState(0)
     const [hoverRating, setHoverRating] = useState(0)
 
@@ -13,23 +17,43 @@ function StarRating({ maxRating = 5 }) {
     function handleSetRating(rating) {
         setRating(rating)
     }
+
+    const textStyle = {
+        color,
+        fontSize: `${size / 1.5}px`,
+        lineHeight: '2',
+        margin: '0',
+    }
+    const containerStyle = {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '16px',
+    }
+    const starsStyle = {
+        display: 'flex',
+    }
+
     return (
-        <div className="container">
-            <div className='stars'>
+        <div style={containerStyle} >
+            <div style={starsStyle} >
                 {Array.from({ length: maxRating }, (_, i) => <Star 
                     key={i}
                     onRate={() => handleSetRating(i+1)}
                     onHover={() => handleSetHoverRating(i+1)}
                     onHoverLeave={() => handleSetHoverRating(0)}
-                    full={hoverRating ? hoverRating >= i+1 : rating >= i+1} />)}
+                    full={hoverRating ? hoverRating >= i+1 : rating >= i+1} 
+                    color={color}
+                    size={size} />)}
             </div>
-            <p>{rating || 'No rating yet'}</p>
+            <p style={textStyle}>{rating || 'No rating yet'}</p>
         </div>
     )
 }
 
 StarRating.propTypes = {
     maxRating: PropTypes.number.isRequired,
+    color: PropTypes.string,
+    size: PropTypes.string
 }
 
 // function Star() {
