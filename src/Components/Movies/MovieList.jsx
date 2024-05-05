@@ -8,15 +8,25 @@ function MovieList({ movies }) {
 
     return (
         <>
-          <ToggleButton isOpen={isOpen} setIsOpen={setIsOpen} />
-          {isOpen && (
-            <ul className="list">
-              {movies?.map((movie) => (
-                <Movie key={movie.imdbID} movie={movie} />
-              ))}
-            </ul>
-          )}
+            <ToggleButton isOpen={isOpen} setIsOpen={setIsOpen} />
+                {isOpen && movies?.length === 0 ? (
+                    <NoMovies />
+                ) : (
+
+                    <ul className="list">
+                    {movies?.map((movie) => (
+                        <Movie key={movie.imdbID} movie={movie} />
+                    ))}
+                    </ul>
+                )}
         </>
+    )
+}
+
+function NoMovies() {
+    console.log("No movies found");
+    return (
+        <p className="error error-text">No movies found</p>
     )
 }
 
