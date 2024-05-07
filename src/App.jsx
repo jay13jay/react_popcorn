@@ -7,32 +7,9 @@ import SearchBar from "./Components/Nav/SearchBar";
 import Results from "./Components/Nav/Results";
 import MovieList from "./Components/Movies/MovieList";
 import WatchedMovieList from "./Components/Movies/WatchedMovieList";
+import MovieDetails from "./Components/Movies/MovieDetails";
 import Main from "./Components/Main";
 import ListBox from "./Components/ListBox";
-
-const tempMovieData = [
-  {
-    imdbID: "tt1375666",
-    Title: "Inception",
-    Year: "2010",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
-  },
-  {
-    imdbID: "tt0133093",
-    Title: "The Matrix",
-    Year: "1999",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
-  },
-  {
-    imdbID: "tt6751668",
-    Title: "Parasite",
-    Year: "2019",
-    Poster:
-      "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
-  },
-];
 
 const apiKEY = "bd04a4b1";
 // const apiKEY = "5d6b9c2c";
@@ -43,8 +20,11 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [selectedID, setSelectedID] = useState(null);
 
-  const [getMovie, setGetMovie] = useState("adfda");
+  function handleCloseMovie() {
+    setSelectedID(null);
+  }
 
   async function timedWait(secs) {
     await new Promise(r => setTimeout(r, secs));
@@ -68,7 +48,7 @@ export default function App() {
 
         setMovies(data.Search);
         // await new Promise(r => setTimeout(r, 1500));
-        timedWait(1500);
+        // timedWait(1500);
         setIsLoading(false);
       } catch (err) {
         setError(err.message);
@@ -98,10 +78,17 @@ export default function App() {
         <ListBox>
           { isLoading ? <Loader /> :
            error ? <ErrorMessage message={error} /> :
-          <MovieList movies={movies} error={error} />}
+          <MovieList 
+            selectedID={selectedID} 
+            handleSelect={setSelectedID} 
+            movies={movies} 
+            error={error} />}
         </ListBox>
         <ListBox>
-          <WatchedMovieList />
+          {selectedID ? <MovieDetails 
+                          movieID={selectedID}
+                          handleCloseMovie={handleCloseMovie} />
+          : <WatchedMovieList />}
         </ListBox>
         
       </Main>
