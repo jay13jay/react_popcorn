@@ -7,8 +7,8 @@ function Star({ onRate,
     size = 48
 }) {
     const starStyle = {
-        height: '48px',
-        width: '48px',
+        height: size,
+        width: size,
         display: 'block',
         cursor: 'pointer',
         color,

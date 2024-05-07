@@ -12,8 +12,8 @@ import Main from "./Components/Main";
 import ListBox from "./Components/ListBox";
 
 const apiKEY = "bd04a4b1";
-// const apiKEY = "5d6b9c2c";
-const apiURL = "https://www.omdbapi.com/?apikey=" + apiKEY + "&s=";
+// const apiKEY = "5d6b9c2c";   // wrong key for testing
+const apiURL = "https://www.omdbapi.com/?apikey=" + apiKEY;
 
 export default function App() {
   const [movies, setMovies] = useState([]);
@@ -35,7 +35,7 @@ export default function App() {
       try {
         setIsLoading(true);
         setError('');
-        const res = await fetch(apiURL + query);
+        const res = await fetch(apiURL + "&s=" + query);
         
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
@@ -87,7 +87,8 @@ export default function App() {
         <ListBox>
           {selectedID ? <MovieDetails 
                           movieID={selectedID}
-                          handleCloseMovie={handleCloseMovie} />
+                          handleCloseMovie={handleCloseMovie}
+                          apiURL={apiURL} />
           : <WatchedMovieList />}
         </ListBox>
         

@@ -20,7 +20,7 @@ function StarRating({
 
     const textStyle = {
         color,
-        fontSize: `${size / 1.5}px`,
+        fontSize: `${size / 2.5}px`,
         lineHeight: '2',
         margin: '0',
     }
@@ -45,7 +45,7 @@ function StarRating({
                     color={color}
                     size={size} />)}
             </div>
-            <p style={textStyle}>{rating || 'No rating yet'}</p>
+            <p style={textStyle}>{rating || ''}</p>
         </div>
     )
 }
