@@ -5,7 +5,7 @@ function ErrorMessage({ message }) {
     <>
       <div className="error">
         <span>😰</span>
-        <p>An error has occured</p>
+        <p>&nbsp; An error has occured</p>
       </div>
       <div className="error">
         Error: <p className="error-text"> {message} </p>

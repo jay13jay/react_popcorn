@@ -23,14 +23,25 @@ function MovieDetails( { movieID, handleCloseMovie, apiURL } ) {
 
     useEffect(() => {
         async function getMovieDetails() {
-            setIsLoading(true);
-            setError('');
-            // see https://www.omdbapi.com/ for details. &i is to search the movie ID
-            const res = await fetch(apiURL + "&i=" + movieID);
-            const data = await res.json();
-            await timedWait(1500);
-            setMovie(data);
-            setIsLoading(false);
+            try {
+                setIsLoading(true);
+                setError('');
+                // see https://www.omdbapi.com/ for details. &i is to search the movie ID
+                const res = await fetch(apiURL + "&i=" + movieID);
+                if (!res.ok) {
+                    throw new Error('Something went wrong!');
+                }
+                const data = await res.json();
+                if (data.Response === "False") {
+                    throw new Error(data.Error);
+                }
+                await timedWait(0);
+                setMovie(data);
+                setIsLoading(false);
+            } catch (err) {
+                setError(err.message);
+                setIsLoading(false);
+            }
         }
         getMovieDetails();
     },[movieID, apiURL]);
@@ -38,33 +49,33 @@ function MovieDetails( { movieID, handleCloseMovie, apiURL } ) {
         <div className="details">
             {isLoading ? <Loader /> : 
                 error ? <ErrorMessage message={error} /> : (
-                <>
-                    <header>
-                        <button 
-                            className='btn-back' 
-                            onClick={handleCloseMovie}>
-                                &larr;
-                        </button>
-                        <img src={poster} alt={`${title} poster`} />
-                        <div className='details-overview'>
-                            <h2>{title}</h2>
-                            <p>{released} &bull; {runtime}</p>
-                            <p>{genre}</p>
-                            <p>
-                                <span> ⭐️ {imdbRating} IMDb rating </span>
-                            </p>
-                        </div>
-                    </header>
-                    <section>
-                        <div className='rating'>
-                            <StarRating maxRating={10} size={28} />
-                        </div>
-                        <p><em>{plot}</em></p>
-                        <p>Starring: {actors}</p>
-                        <p>Director: {director}</p>
-                    </section>
-                </>
-            )}
+                    <>
+                        <header>
+                            <button 
+                                className='btn-back' 
+                                onClick={handleCloseMovie}>
+                                    &larr;
+                            </button>
+                            <img src={poster} alt={`${title} poster`} />
+                            <div className='details-overview'>
+                                <h2>{title}</h2>
+                                <p>{released} &bull; {runtime}</p>
+                                <p>{genre}</p>
+                                <p>
+                                    <span> ⭐️ {imdbRating} IMDb rating </span>
+                                </p>
+                            </div>
+                        </header>
+                        <section>
+                            <div className='rating'>
+                                <StarRating maxRating={10} size={28} />
+                            </div>
+                            <p><em>{plot}</em></p>
+                            <p>Starring: {actors}</p>
+                            <p>Director: {director}</p>
+                        </section>
+                    </>
+             )}
         </div>
     )
 }
