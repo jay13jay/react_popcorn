@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import PropTypes from 'prop-types';
 
 import Navbar from "./Components/Nav/Navbar";
 import Logo from "./Components/Nav/Logo";
@@ -23,9 +22,19 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedID, setSelectedID] = useState(null);
+  const [watchedMovies, setWatchedMovies] = useState([]);
+
 
   function handleCloseMovie() {
     setSelectedID(null);
+  }
+
+  function handleAddWatched(movie) {
+    setWatchedMovies([...watchedMovies, movie]);
+  }
+  function handleRemoveWatched(movie) {
+    setWatchedMovies(watchedMovies.filter(m => m.imdbID !== movie.imdbID));
+    console.log(watchedMovies);
   }
 
   async function timedWait(secs) {
@@ -90,8 +99,12 @@ export default function App() {
           {selectedID ? <MovieDetails 
                           movieID={selectedID}
                           handleCloseMovie={handleCloseMovie}
-                          apiURL={apiURL} /> :
-          <WatchedMovieList />}
+                          apiURL={apiURL}
+                          watchedMovies={watchedMovies}
+                          onAddWatched={handleAddWatched}
+                          onRemoveWatched={handleRemoveWatched} /> :
+          <WatchedMovieList 
+            watched={watchedMovies} />}
         </ListBox>
         
       </Main>

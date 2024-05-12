@@ -5,17 +5,46 @@ import StarRating from '../StarRating/StarRating';
 import Loader from '../Loader';
 import ErrorMessage from '../ErrorMessage';
 
-function MovieDetails( { movieID, handleCloseMovie, apiURL } ) {
+function MovieDetails( { movieID, watchedMovies, onAddWatched, onRemoveWatched, handleCloseMovie, apiURL } ) {
     const [movie, setMovie] = useState({});
     const [rating, setRating] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const {Title: title, Year: year, Poster: poster,
-        Runtime: runtime, imdbRating, Plot: plot, Released: released,
-        Actors: actors, Director: director, Genre: genre
+    const isWatched = watchedMovies.map(movie => movie.imdbID).includes(movieID);
+
+    const {
+        Title: title, 
+        Year: year, 
+        Poster: poster,
+        Runtime: runtime, 
+        imdbRating,
+        Plot: plot, 
+        Released: released,
+        Actors: actors, 
+        Director: director, 
+        Genre: genre,
     } = movie;
-    console.log("Title and year: ", title, year)
+
+    function handleAdd() {
+        const newWatchedMovie = { 
+            imdbID: movieID,
+            title,
+            year,
+            poster,
+            imdbRating: Number(imdbRating),
+            userRating: Number(rating),
+            runtime: Number(runtime.split(" ")[0]),
+         };
+
+        onAddWatched(newWatchedMovie);
+        handleCloseMovie();
+    }
+
+    function handleRemove() {
+        onRemoveWatched(movieID);
+        handleCloseMovie();
+    }
 
     async function timedWait(secs) {
       await new Promise(r => setTimeout(r, secs));
@@ -35,8 +64,9 @@ function MovieDetails( { movieID, handleCloseMovie, apiURL } ) {
                 if (data.Response === "False") {
                     throw new Error(data.Error);
                 }
-                await timedWait(0);
+                // await timedWait(0);
                 setMovie(data);
+                isWatched && setRating(watchedMovies.find(movie => movie.imdbID === movieID).userRating);
                 setIsLoading(false);
             } catch (err) {
                 setError(err.message);
@@ -44,7 +74,8 @@ function MovieDetails( { movieID, handleCloseMovie, apiURL } ) {
             }
         }
         getMovieDetails();
-    },[movieID, apiURL]);
+        setRating(0);
+    },[movieID, apiURL, isWatched, watchedMovies]);
     return (
         <div className="details">
             {isLoading ? <Loader /> : 
@@ -68,7 +99,24 @@ function MovieDetails( { movieID, handleCloseMovie, apiURL } ) {
                         </header>
                         <section>
                             <div className='rating'>
-                                <StarRating maxRating={10} size={28} />
+                                <StarRating rating={rating}
+                                    setRating={setRating} 
+                                    maxRating={10} 
+                                    size={28} />
+                                {rating > 0 && !isWatched && (
+                                    <button 
+                                        className='btn-add' 
+                                        onClick={handleAdd}>
+                                            Add to Watched
+                                    </button>
+                                )}
+                                {isWatched && (
+                                    <button 
+                                        className='btn-remove'
+                                        onClick={handleRemove} >
+                                            Remove from Watched
+                                    </button>
+                                )}
                             </div>
                             <p><em>{plot}</em></p>
                             <p>Starring: {actors}</p>
@@ -84,6 +132,8 @@ MovieDetails.propTypes = {
     movieID: PropTypes.string.isRequired,
     handleCloseMovie: PropTypes.func,
     apiURL: PropTypes.string.isRequired,
+    watchedMovies: PropTypes.array.isRequired,
+    onAddWatched: PropTypes.func.isRequired,
 }
 
 export default MovieDetails;

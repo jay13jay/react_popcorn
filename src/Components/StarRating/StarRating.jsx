@@ -5,10 +5,11 @@ import Star from './Star';
 function StarRating({ 
     maxRating = 5,
     color = '#fcc419',
-    size = 48 
+    size = 48,
+    rating,
+    setRating,
 }) {
 
-    const [rating, setRating] = useState(0)
     const [hoverRating, setHoverRating] = useState(0)
 
     function handleSetHoverRating(rating) {
@@ -54,6 +55,8 @@ StarRating.propTypes = {
     maxRating: PropTypes.number.isRequired,
     color: PropTypes.string,
     size: PropTypes.number,
+    rating: PropTypes.number,
+    setRating: PropTypes.func
 }
 
 // function Star() {
