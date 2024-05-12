@@ -99,16 +99,18 @@ function MovieDetails( { movieID, watchedMovies, onAddWatched, onRemoveWatched, 
                         </header>
                         <section>
                             <div className='rating'>
-                                <StarRating rating={rating}
-                                    setRating={setRating} 
-                                    maxRating={10} 
-                                    size={28} />
-                                {rating > 0 && !isWatched && (
+                                {!isWatched && (
+                                <>
+                                    <StarRating rating={rating}
+                                        setRating={setRating} 
+                                        maxRating={10} 
+                                        size={28} />
                                     <button 
                                         className='btn-add' 
                                         onClick={handleAdd}>
                                             Add to Watched
                                     </button>
+                                </>
                                 )}
                                 {isWatched && (
                                     <button 
