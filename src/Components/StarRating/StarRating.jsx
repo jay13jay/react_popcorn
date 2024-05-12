@@ -53,7 +53,7 @@ function StarRating({
 StarRating.propTypes = {
     maxRating: PropTypes.number.isRequired,
     color: PropTypes.string,
-    size: PropTypes.string
+    size: PropTypes.number,
 }
 
 // function Star() {

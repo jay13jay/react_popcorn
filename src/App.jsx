@@ -10,6 +10,8 @@ import WatchedMovieList from "./Components/Movies/WatchedMovieList";
 import MovieDetails from "./Components/Movies/MovieDetails";
 import Main from "./Components/Main";
 import ListBox from "./Components/ListBox";
+import Loader from "./Components/Loader";
+import ErrorMessage from "./Components/ErrorMessage";
 
 const apiKEY = "bd04a4b1";
 // const apiKEY = "5d6b9c2c";   // wrong key for testing
@@ -77,44 +79,22 @@ export default function App() {
       <Main>
         <ListBox>
           { isLoading ? <Loader /> :
-           error ? <ErrorMessage message={error} /> :
-          <MovieList 
-            selectedID={selectedID} 
-            handleSelect={setSelectedID} 
-            movies={movies} 
-            error={error} />}
+            error ? <ErrorMessage message={error} /> :
+            <MovieList 
+              selectedID={selectedID} 
+              handleSelect={setSelectedID} 
+              movies={movies} 
+              error={error} />}
         </ListBox>
         <ListBox>
           {selectedID ? <MovieDetails 
                           movieID={selectedID}
                           handleCloseMovie={handleCloseMovie}
-                          apiURL={apiURL} />
-          : <WatchedMovieList />}
+                          apiURL={apiURL} /> :
+          <WatchedMovieList />}
         </ListBox>
         
       </Main>
     </>
   );
-}
-
-function Loader() {
-  return <p className="loader">Loading...</p>;
-}
-
-function ErrorMessage({ message }) {
-  return (
-    <>
-      <div className="error">
-        <span>😰</span>
-        <p>Unable to display movie list.</p>
-      </div>
-      <div className="error">
-        Error: <p className="error-text"> {message} </p>
-      </div>
-    </>
-  )
-}
-
-ErrorMessage.propTypes = {
-  message: PropTypes.string.isRequired,
 }
