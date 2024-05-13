@@ -6,7 +6,7 @@ import WatchedMovie from "./WatchedMovie";
 const average = (arr) =>
   arr.reduce((acc, cur, _, arr) => acc + cur / arr.length, 0);
 
-function WatchedMovieList({watched}) {
+function WatchedMovieList({watched, onDeleteWatched}) {
     const [isOpen, setIsOpen] = useState(true);
 
     return (
@@ -17,8 +17,12 @@ function WatchedMovieList({watched}) {
               <WatchedSummary watched={watched} />
               <ul className="list">
                 {watched.map((movie) => (
-                  <WatchedMovie key={movie.imdbID} movie={movie} />
+                  <WatchedMovie 
+                    key={movie.imdbID} 
+                    movie={movie}
+                    onDeleteWatched={onDeleteWatched} />
                 ))}
+                
               </ul>
             </>
           )}
@@ -56,7 +60,8 @@ function WatchedSummary({watched}) {
 }
 
 WatchedMovieList.propTypes = {
-  watched: PropTypes.array.isRequired
+  watched: PropTypes.array.isRequired,
+  onDeleteWatched: PropTypes.func.isRequired
 }
 WatchedSummary.propTypes = {
   watched: PropTypes.array.isRequired

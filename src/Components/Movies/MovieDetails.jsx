@@ -46,9 +46,9 @@ function MovieDetails( { movieID, watchedMovies, onAddWatched, onRemoveWatched, 
         handleCloseMovie();
     }
 
-    async function timedWait(secs) {
-      await new Promise(r => setTimeout(r, secs));
-    }
+    // async function timedWait(secs) {
+    //   await new Promise(r => setTimeout(r, secs));
+    // }
 
     useEffect(() => {
         async function getMovieDetails() {
@@ -113,11 +113,14 @@ function MovieDetails( { movieID, watchedMovies, onAddWatched, onRemoveWatched, 
                                 </>
                                 )}
                                 {isWatched && (
-                                    <button 
-                                        className='btn-remove'
-                                        onClick={handleRemove} >
-                                            Remove from Watched
-                                    </button>
+                                    <>
+                                        <p>Rating: {rating}</p>
+                                        <button 
+                                            className='btn-remove'
+                                            onClick={handleRemove} >
+                                                Remove from watched list
+                                        </button>
+                                    </>
                                 )}
                             </div>
                             <p><em>{plot}</em></p>
@@ -136,6 +139,7 @@ MovieDetails.propTypes = {
     apiURL: PropTypes.string.isRequired,
     watchedMovies: PropTypes.array.isRequired,
     onAddWatched: PropTypes.func.isRequired,
+    onRemoveWatched: PropTypes.func.isRequired,
 }
 
 export default MovieDetails;

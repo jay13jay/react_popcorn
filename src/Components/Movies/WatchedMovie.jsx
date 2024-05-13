@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-function WatchedMovie({ movie }) {
+function WatchedMovie({ movie, onDeleteWatched }) {
     return (
         <li key={movie.imdbID}>
             <img src={movie.poster} alt={`${movie.title} poster`} />
@@ -17,6 +17,7 @@ function WatchedMovie({ movie }) {
                 <span>⏳</span>
                 <span>{movie.runtime} min</span>
                 </p>
+                <button className="btn-delete" onClick={() => onDeleteWatched(movie.imdbID)}>X</button>
             </div>
             </li>
     )
@@ -24,6 +25,7 @@ function WatchedMovie({ movie }) {
 
 WatchedMovie.propTypes = {
     movie: PropTypes.object,
+    onDeleteWatched: PropTypes.func
 }
 
 export default WatchedMovie;

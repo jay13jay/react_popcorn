@@ -32,14 +32,15 @@ export default function App() {
   function handleAddWatched(movie) {
     setWatchedMovies([...watchedMovies, movie]);
   }
-  function handleRemoveWatched(movie) {
-    setWatchedMovies(watchedMovies.filter(m => m.imdbID !== movie.imdbID));
-    console.log(watchedMovies);
+  function handleRemoveWatched(id) {
+    setWatchedMovies(watchedMovies =>
+      watchedMovies.filter(movie => 
+        movie.imdbID !== id ));
   }
 
-  async function timedWait(secs) {
-    await new Promise(r => setTimeout(r, secs));
-  }
+  // async function timedWait(secs) {
+  //   await new Promise(r => setTimeout(r, secs));
+  // }
 
   useEffect(function() {
     async function fetchData() {
@@ -104,7 +105,8 @@ export default function App() {
                           onAddWatched={handleAddWatched}
                           onRemoveWatched={handleRemoveWatched} /> :
           <WatchedMovieList 
-            watched={watchedMovies} />}
+            watched={watchedMovies} 
+            onDeleteWatched={handleRemoveWatched} />}
         </ListBox>
         
       </Main>
